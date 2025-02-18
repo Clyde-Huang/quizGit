@@ -26,6 +26,10 @@ import com.example.quiz.vo.QuizSearchRes;
 import com.example.quiz.vo.SearchReq;
 import com.example.quiz.vo.StatisticsRes;
 
+import jakarta.validation.Valid;
+
+//有用@Valid條件判斷 要加上@Valid 才會生效
+
 @CrossOrigin
 @RestController
 public class QuizServiceController {
@@ -37,7 +41,7 @@ public class QuizServiceController {
 	private FeedbackSercive feedbackService;
 
 	@PostMapping(value = "quiz/create") // 增
-	public BasicRes create(@RequestBody CreateReq req) {
+	public BasicRes create(@Valid @RequestBody CreateReq req) {
 		return quizService.create(req);
 	}
 

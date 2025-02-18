@@ -79,22 +79,22 @@ public class QuizServiceimpl implements QuizService {
 	}
 
 	private BasicRes checkParam(CreateReq req) {
-		// 排除法一一檢查
-		if (!StringUtils.hasText(req.getName())) {
-			return new BasicRes(ResMassage.PARAM_QUIZ_NAME_ERROR.getCode(),
-					ResMassage.PARAM_QUIZ_NAME_ERROR.getMessage());
-		}
-		if (!StringUtils.hasText(req.getDescription())) {
-			return new BasicRes(ResMassage.PARAM_DESCRIPTION_ERROR.getCode(),
-					ResMassage.PARAM_DESCRIPTION_ERROR.getMessage());
-		}
-		if (req.getStartDate() == null) {
-			return new BasicRes(ResMassage.PARAM_STARTDATE_ERROR.getCode(),
-					ResMassage.PARAM_STARTDATE_ERROR.getMessage());
-		}
-		if (req.getEndDate() == null) {
-			return new BasicRes(ResMassage.PARAM_ENDDATE_ERROR.getCode(), ResMassage.PARAM_ENDDATE_ERROR.getMessage());
-		}
+		// 排除法一一檢查 //已經用@valid 了
+//		if (!StringUtils.hasText(req.getName())) {
+//			return new BasicRes(ResMassage.PARAM_QUIZ_NAME_ERROR.getCode(),
+//					ResMassage.PARAM_QUIZ_NAME_ERROR.getMessage());
+//		}
+//		if (!StringUtils.hasText(req.getDescription())) {
+//			return new BasicRes(ResMassage.PARAM_DESCRIPTION_ERROR.getCode(),
+//					ResMassage.PARAM_DESCRIPTION_ERROR.getMessage());
+//		}
+//		if (req.getStartDate() == null) {
+//			return new BasicRes(ResMassage.PARAM_STARTDATE_ERROR.getCode(),
+//					ResMassage.PARAM_STARTDATE_ERROR.getMessage());
+//		}
+//		if (req.getEndDate() == null) {
+//			return new BasicRes(ResMassage.PARAM_ENDDATE_ERROR.getCode(), ResMassage.PARAM_ENDDATE_ERROR.getMessage());
+//		}
 		// 檢查開始時間不能比結束時間晚
 		// 用isAfter或before判斷
 		if (req.getStartDate().isAfter(req.getEndDate())) {
@@ -102,23 +102,23 @@ public class QuizServiceimpl implements QuizService {
 		}
 		// =====檢查問題內容
 		List<Qusetion> quesList = req.getQuestionList();
-		if (req.getQuestionList().size() <= 0) {
-			return new BasicRes(ResMassage.PARAM_QUESLIST_ERROR.getCode(),
-					ResMassage.PARAM_QUESLIST_ERROR.getMessage());
-		}
+//		if (req.getQuestionList().size() <= 0) {
+//			return new BasicRes(ResMassage.PARAM_QUESLIST_ERROR.getCode(),
+//					ResMassage.PARAM_QUESLIST_ERROR.getMessage());
+//		}
 		for (Qusetion item : quesList) {
 			// 問題編號從1開始，但無法檢查是否有按照順序
-			if (item.getQuesId() <= 0) {
-				return new BasicRes(ResMassage.PARAM_QUESID_ERROR.getCode(),
-						ResMassage.PARAM_QUESID_ERROR.getMessage());
-			}
-			if (!StringUtils.hasText(item.getQuestName())) {
-				return new BasicRes(ResMassage.PARAM_QUIZ_NAME_ERROR.getCode(),
-						ResMassage.PARAM_QUIZ_NAME_ERROR.getMessage());
-			}
-			if (!StringUtils.hasText(item.getType())) {
-				return new BasicRes(ResMassage.PARAM_TYPE_ERROR.getCode(), ResMassage.PARAM_TYPE_ERROR.getMessage());
-			}
+//			if (item.getQuesId() <= 0) {
+//				return new BasicRes(ResMassage.PARAM_QUESID_ERROR.getCode(),
+//						ResMassage.PARAM_QUESID_ERROR.getMessage());
+//			}
+//			if (!StringUtils.hasText(item.getQuestName())) {
+//				return new BasicRes(ResMassage.PARAM_QUIZ_NAME_ERROR.getCode(),
+//						ResMassage.PARAM_QUIZ_NAME_ERROR.getMessage());
+//			}
+//			if (!StringUtils.hasText(item.getType())) {
+//				return new BasicRes(ResMassage.PARAM_TYPE_ERROR.getCode(), ResMassage.PARAM_TYPE_ERROR.getMessage());
+//			}
 			/*
 			 * if (!StringUtils.hasText(item.getOptions())) { return new
 			 * BasicRes(ResMassage.PARAM_OPTIONS_ERROR.getCode(),
@@ -261,34 +261,32 @@ public class QuizServiceimpl implements QuizService {
 	public QuizSearchRes getQuizById(int id) {
 		// 檢查 id 是否有效
 		if (id <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "請提供有效的 ID");
-        }
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "請提供有效的 ID");
+		}
 
-        Optional<Quiz> quiz = quizDao.findById(id); // 使用 Optional 來處理可能的 null
+		Optional<Quiz> quiz = quizDao.findById(id); // 使用 Optional 來處理可能的 null
 
-        if (!quiz.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "找不到對應的 Quiz");
-        }
+		if (!quiz.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "找不到對應的 Quiz");
+		}
 
-        List<Quiz> quizList = Collections.singletonList(quiz.get());
+		List<Quiz> quizList = Collections.singletonList(quiz.get());
 
-        return new QuizSearchRes(ResMassage.SUCCESS.getCode(), ResMassage.SUCCESS.getMessage(), quizList);
-    
+		return new QuizSearchRes(ResMassage.SUCCESS.getCode(), ResMassage.SUCCESS.getMessage(), quizList);
+
 	}
-	
-	 // 只更新 published 屬性
+
+	// 只更新 published 屬性
 	@Override
-    public Quiz updatePublished(int id, boolean published) {
-        // 查詢指定 ID 的 Quiz 資料
-        Quiz quiz = quizDao.findById(id).orElseThrow(() -> new RuntimeException("Quiz not found"));
+	public Quiz updatePublished(int id, boolean published) {
+		// 查詢指定 ID 的 Quiz 資料
+		Quiz quiz = quizDao.findById(id).orElseThrow(() -> new RuntimeException("Quiz not found"));
 
-        // 更新 published 屬性
-        quiz.setPublished(published);
+		// 更新 published 屬性
+		quiz.setPublished(published);
 
-        // 使用 save() 來儲存更新後的 Quiz
-        return quizDao.save(quiz);
-    }
-	
-	
-	
+		// 使用 save() 來儲存更新後的 Quiz
+		return quizDao.save(quiz);
+	}
+
 }

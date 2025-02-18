@@ -1,11 +1,15 @@
 package com.example.quiz.entity;
 //entity 綁資料庫 表格名稱
 
+import com.example.quiz.constants.ResMassage;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 //雙PK
 //@IdClass 一個Entity 中若有多個PK ，就必須要再升成一個類 來管理雙PK 此@用來關聯class
@@ -22,13 +26,18 @@ public class Qusetion {
 	@Column(name = "quiz_id")
 	private int quizId;
 
+	//@Min表示至'少'value(有包含，就是至少1題)
+	@Min(value = 1,message=ResMassage.Constants.PARAM_QUES_ID_ERROR_MSG)
 	@Id
 	@Column(name = "ques_id")
 	private int quesId;
 
+	
+	@NotBlank(message = ResMassage.Constants.PARAM_QUESNAME_ERROR_MSG )
 	@Column(name = "quest_name")
 	private String questName;
 
+	@NotBlank(message = ResMassage.Constants.PARAM_TYPE_ERROR_MSG )
 	@Column(name = "type")
 	private String type;
 

@@ -12,27 +12,18 @@ public enum ResMassage {
 	PARAM_QUESID_ERROR(400, "param quesid error"), //
 	PARAM_QUESNAME_ERROR(400, "param question name error"), //
 	PARAM_TYPE_ERROR(400, "param typr error"), //
-	PARAM_OPTIONS_ERROR(400, "param options error"),//
-	PARAM_QUESLIST_ERROR(400, "param question list error"), //長度不為0
+	PARAM_OPTIONS_ERROR(400, "param options error"), //
+	PARAM_QUESLIST_ERROR(400, "param question list error"), // 長度不為0
 	// 常數都大寫，用_連接單字
-	DATA_SAVE_ERROR(400,"Data save error"),
-	DATA_UPDATE_ERROR(400,"Data update error"),
-	QUES_TYPE_MISMATCH(400,"type mismatch"),
-	PARAM_QWUIZ_ID_ERROR(400,"param q i e"),
-	QUIZ_NOT_FOUND(404,"quiz not found" ),
-	QUIZ_ID_MISSMATCH(400,"quiz id mismatch"),
-	PARAM_USER_NAME_ERROR(400,"param user name error"),
-	PARAM_EMAIL_ERROR(400,"param email error"),
-	PARAM_AGE_ERROR(400,"param age error"),
-	EMAIL_DUPLICATED(400,"email duplicate"),
-	CREATEDAY_OUT_OF_DATE_RANGE(400,"createday out of date range"),
-	ANSWER_IS_REQUIRE(400,"answer is require"),
-	ONE_OPTION_IS_ALLOWED(400,"one option is allowed"),
-	OPTIONS_PARSER_ERROR(400,"options parser error"),
-	OPTIONS_ANSWER_DISMATCH(400,"options answer dismatched"),
-	ANSWER_PARSER_ERROR(400,"answer parser error"),
-	OPTION_COUNT_ERROR(400,"option count error");
-	
+	DATA_SAVE_ERROR(400, "Data save error"), DATA_UPDATE_ERROR(400, "Data update error"),
+	QUES_TYPE_MISMATCH(400, "type mismatch"), PARAM_QWUIZ_ID_ERROR(400, "param q i e"),
+	QUIZ_NOT_FOUND(404, "quiz not found"), QUIZ_ID_MISSMATCH(400, "quiz id mismatch"),
+	PARAM_USER_NAME_ERROR(400, "param user name error"), PARAM_EMAIL_ERROR(400, "param email error"),
+	PARAM_AGE_ERROR(400, "param age error"), EMAIL_DUPLICATED(400, "email duplicate"),
+	CREATEDAY_OUT_OF_DATE_RANGE(400, "createday out of date range"), ANSWER_IS_REQUIRE(400, "answer is require"),
+	ONE_OPTION_IS_ALLOWED(400, "one option is allowed"), OPTIONS_PARSER_ERROR(400, "options parser error"),
+	OPTIONS_ANSWER_DISMATCH(400, "options answer dismatched"), ANSWER_PARSER_ERROR(400, "answer parser error"),
+	OPTION_COUNT_ERROR(400, "option count error");
 
 	private int Code;
 	private String message;
@@ -57,6 +48,19 @@ public enum ResMassage {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public static class Constants { // static 類 內容也要static
+		public static final String PARAM_QUIZ_NAME_ERROR_MSG = "param name error"; //
+		public static final String PARAM_DESCRIPTION_ERROR_MSG = "param description error"; //
+		public static final String PARAM_STARTDATE_ERROR_MSG = "param startdate error"; //
+		public static final String PARAM_ENDDATE_ERROR_MSG = "param enddate error"; //
+		
+		public static final String PARAM_QUESLIST_ERROR_MSG = "param question list error"; //
+		public static final String PARAM_QUES_ID_ERROR_MSG = "param question id error"; //
+		public static final String PARAM_QUESNAME_ERROR_MSG = "param question name error"; //
+		public static final String PARAM_TYPE_ERROR_MSG = "param question type error"; //
+		//public static final String
 	}
 
 }
