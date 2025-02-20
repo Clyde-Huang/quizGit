@@ -29,5 +29,6 @@ public interface QuizService {
 	
 	public Quiz updatePublished(int id, boolean published); //改發布
 	
-	
+	//找指定數量email
+	public BasicRes checkFeedbackAmount(int quizId);
 }

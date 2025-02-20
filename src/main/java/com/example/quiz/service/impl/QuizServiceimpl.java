@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.quiz.Dao.FeedBackDao;
 import com.example.quiz.Dao.QuestionDao;
 import com.example.quiz.Dao.QuizDao;
 import com.example.quiz.constants.QuesType;
@@ -37,6 +38,9 @@ public class QuizServiceimpl implements QuizService {
 
 	@Autowired
 	private QuestionDao questionDao;
+	
+	@Autowired
+	private FeedBackDao feedBackDao;
 
 	@Transactional(rollbackOn = Exception.class)
 	// rollbackOn =發生例外Exception時@Transactional
@@ -289,4 +293,30 @@ public class QuizServiceimpl implements QuizService {
 		return quizDao.save(quiz);
 	}
 
+	// 找指定數量email
+		@Override
+		public BasicRes checkFeedbackAmount(int quizId) {
+			try {
+				// 獲取不同email的數量
+				int distinctEmails = feedBackDao.countDistinctEmailsByQuizId(quizId);
+
+				// 檢查問卷是否存在
+				Quiz quiz = quizDao.findById(quizId)
+						.orElseThrow(() -> new RuntimeException("Quiz not found with id: " + quizId));
+
+				// 如果收集到5個以上的回饋，將published設為false
+				if (distinctEmails >= 5) {
+					quiz.setPublished(false);
+					quizDao.save(quiz);
+					return new BasicRes(ResMassage.SUCCESS.getCode(), ResMassage.SUCCESS.getMessage());
+				}
+
+				return new BasicRes(); //不一定對
+
+			} catch (Exception e) {
+				return new BasicRes();
+			}
+		}
+	
+	
 }

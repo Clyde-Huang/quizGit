@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.quiz.entity.Feedback;
@@ -58,6 +59,11 @@ public interface FeedBackDao extends JpaRepository<Feedback, FeedbackId> {
 	
 	//2/13
 	List<Feedback> findByQuizId(int quizId);
+	
+	//DISTINCT f.email 找不重複的email
+	@Query("SELECT COUNT(DISTINCT f.email) FROM Feedback f WHERE f.quizId = :quizId")
+	public int countDistinctEmailsByQuizId(@Param("quizId") Integer quizId);
+
 	
 	
 }

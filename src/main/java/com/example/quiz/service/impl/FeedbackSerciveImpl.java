@@ -491,52 +491,53 @@ public class FeedbackSerciveImpl implements FeedbackSercive {
 		return null;
 	}
 
-	
-		@Override
-		public Map<String, Object> getFeedbackByQuizId(int quizId) {
-		    List<Feedback> feedbackList = feedBackDao.findByQuizId(quizId);
-		    
-		    if (feedbackList.isEmpty()) {
-		        return new HashMap<>(); // 返回空Map而不是null，避免NPE
-		    }
+	@Override
+	public Map<String, Object> getFeedbackByQuizId(int quizId) {
+		List<Feedback> feedbackList = feedBackDao.findByQuizId(quizId);
 
-		    // 使用 email 分組
-		    Map<String, List<Feedback>> groupedByEmail = feedbackList.stream()
-		            .collect(Collectors.groupingBy(Feedback::getEmail));
-		    
-		    // 結果Map
-		    Map<String, Object> result = new HashMap<>();
-		    result.put("quiz_id", quizId);
-		    
-		    // 整理每個email的回答
-		    List<Map<String, Object>> emailGroups = new ArrayList<>();
-		    
-		    for (Map.Entry<String, List<Feedback>> entry : groupedByEmail.entrySet()) {
-		        List<Feedback> emailFeedbacks = entry.getValue();
-		        Map<String, Object> emailGroup = new HashMap<>();
-		        
-		        // 取得第一筆資料來獲取基本資訊
-		        Feedback firstFeedback = emailFeedbacks.get(0);
-		        
-		        // 整理問題答案對應Map
-		        Map<Integer, String> quesIdAnswerMap = new HashMap<>();
-		        for (Feedback feedback : emailFeedbacks) {
-		            quesIdAnswerMap.put(feedback.getQuesId(), feedback.getAnswer());
-		        }
-		        
-		        // 設置該email組的所有資訊
-		        emailGroup.put("quiz_id", firstFeedback.getQuizId());
-		        emailGroup.put("user_name", firstFeedback.getUserName());
-		        emailGroup.put("email", firstFeedback.getEmail());
-		        emailGroup.put("age", firstFeedback.getAge());
-		        emailGroup.put("create_time", firstFeedback.getCreateTime()); // 確保每組都有create_time
-		        emailGroup.put("ques_id_answer_map", quesIdAnswerMap);
-		        
-		        emailGroups.add(emailGroup);
-		    }
-		    
-		    result.put("responses", emailGroups);
-		    return result;
+		if (feedbackList.isEmpty()) {
+			return new HashMap<>(); // 返回空Map而不是null，避免NPE
 		}
+
+		// 使用 email 分組
+		Map<String, List<Feedback>> groupedByEmail = feedbackList.stream()
+				.collect(Collectors.groupingBy(Feedback::getEmail));
+
+		// 結果Map
+		Map<String, Object> result = new HashMap<>();
+		result.put("quiz_id", quizId);
+
+		// 整理每個email的回答
+		List<Map<String, Object>> emailGroups = new ArrayList<>();
+
+		for (Map.Entry<String, List<Feedback>> entry : groupedByEmail.entrySet()) {
+			List<Feedback> emailFeedbacks = entry.getValue();
+			Map<String, Object> emailGroup = new HashMap<>();
+
+			// 取得第一筆資料來獲取基本資訊
+			Feedback firstFeedback = emailFeedbacks.get(0);
+
+			// 整理問題答案對應Map
+			Map<Integer, String> quesIdAnswerMap = new HashMap<>();
+			for (Feedback feedback : emailFeedbacks) {
+				quesIdAnswerMap.put(feedback.getQuesId(), feedback.getAnswer());
+			}
+
+			// 設置該email組的所有資訊
+			emailGroup.put("quiz_id", firstFeedback.getQuizId());
+			emailGroup.put("user_name", firstFeedback.getUserName());
+			emailGroup.put("email", firstFeedback.getEmail());
+			emailGroup.put("age", firstFeedback.getAge());
+			emailGroup.put("create_time", firstFeedback.getCreateTime()); // 確保每組都有create_time
+			emailGroup.put("ques_id_answer_map", quesIdAnswerMap);
+
+			emailGroups.add(emailGroup);
+		}
+
+		result.put("responses", emailGroups);
+		return result;
+	}
+
+	
 
 }

@@ -134,9 +134,13 @@ public class QuizServiceController {
 	@PutMapping("quiz/{id}/published") //改不靈
 	public Quiz updatePublished(@PathVariable(value = "id") int id,
 			@RequestParam(value = "published") boolean published) {
-
 		// 呼叫 service 層來更新 published 屬性
 		return quizService.updatePublished(id, published);
+	}
+	
+	@PostMapping(value = "quiz/check_feedback_amount") //目前設定只能5筆就關閉
+	public BasicRes checkFeedbackAmount(@RequestParam(value = "quiz_id") int quizId) {
+	    return quizService.checkFeedbackAmount(quizId);
 	}
 
 }
